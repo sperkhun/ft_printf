@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int			print_param(t_param p, va_list argptr)
+static int			parse_param(t_param p, va_list argptr)
 {
 	int	i;
 	int	status;
@@ -23,17 +23,17 @@ int			print_param(t_param p, va_list argptr)
 	{
 		if (p.type == g_print_type[i].type && p.modifire == g_print_type[i].mod)
 		{
-			g_print_type[i].print(argptr, &p);
+			g_print_type[i].parse(argptr, &p);
 			status = 1;
 		}
 		i++;
 	}
 	if (!status)
-		print_inv(&p);
+		parse_inv(&p);
 	return (p.res);
 }
 
-void		default_param(t_param *p)
+static void			default_param(t_param *p)
 {
 	*p = (t_param) {
 		.modifire = none,
@@ -53,7 +53,7 @@ void		default_param(t_param *p)
 	};
 }
 
-t_param		create_param(const char *str, int len, int val)
+static t_param		create_param(const char *str, int len, int valid)
 {
 	t_param		p;
 	int			i;
@@ -62,7 +62,7 @@ t_param		create_param(const char *str, int len, int val)
 	i = 0;
 	j = 0;
 	default_param(&p);
-	if (str[i] == '%' && val)
+	if (str[i] == '%' && valid)
 	{
 		i++;
 		while (j < 5)
@@ -76,29 +76,29 @@ t_param		create_param(const char *str, int len, int val)
 	return (p);
 }
 
-int			parse_format(const char *format, va_list argptr)
+int					parse_format(const char *format, va_list argptr)
 {
 	int		i;
 	int		start;
-	int		val;
+	int		valid;
 	int		res;
 
 	i = 0;
-	res = 0;
-	while (format[i])
+	res = format ? 0 : -1;
+	while (format && format[i])
 	{
 		start = i;
-		val = 0;
+		valid = 0;
 		if (format[i] == '%')
 		{
 			i++;
-			if (valid(format, &i, &val))
+			if (is_valid(format, &i, &valid))
 				continue ;
 		}
 		else
 			while (format[i] && format[i] != '%')
 				i++;
-		res += print_param(create_param(format + start, i - start, val),\
+		res += parse_param(create_param(format + start, i - start, valid),\
 																	argptr);
 	}
 	return (res);

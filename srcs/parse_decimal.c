@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_decimal.c                                    :+:      :+:    :+:   */
+/*   parse_decimal.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sperkhun <sperkhun@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,25 @@
 
 #include "ft_printf.h"
 
-void		print_d(va_list argptr, t_param *p)
+void		parse_d(va_list argptr, t_param *p)
 {
 	p->var.i = va_arg(argptr, int);
 	print_number(p, ft_itoa(p->var.i));
 }
 
-void		print_dh(va_list argptr, t_param *p)
+void		parse_dh(va_list argptr, t_param *p)
 {
 	p->var.i = va_arg(argptr, int);
 	print_number(p, ft_itoa((short)p->var.i));
 }
 
-void		print_dhh(va_list argptr, t_param *p)
+void		parse_dhh(va_list argptr, t_param *p)
 {
 	p->var.i = va_arg(argptr, int);
 	print_number(p, ft_itoa((char)p->var.i));
 }
 
-void		print_dl(va_list argptr, t_param *p)
+void		parse_dl(va_list argptr, t_param *p)
 {
 	char sign;
 
@@ -44,7 +44,7 @@ void		print_dl(va_list argptr, t_param *p)
 	print_number(p, itoa_base(p->var.li, 10, sign, "0123456789"));
 }
 
-void		print_dll(va_list argptr, t_param *p)
+void		parse_dll(va_list argptr, t_param *p)
 {
 	char sign;
 

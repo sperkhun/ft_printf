@@ -15,53 +15,45 @@
 int			valid_type(char c)
 {
 	if (ft_strchr("cspdiouxXf%", c) != NULL)
-	{
 		return (1);
-	}
 	return (0);
 }
 
 int			valid_mod(char c)
 {
 	if (ft_strchr("hlL", c) != NULL)
-	{
 		return (1);
-	}
 	return (0);
 }
 
 int			valid_precis(char c)
 {
 	if (ft_isdigit(c) || c == '.')
-	{
 		return (1);
-	}
 	return (0);
 }
 
 int			valid_flags(char c)
 {
 	if (ft_strchr("-+ #0", c) != NULL)
-	{
 		return (1);
-	}
 	return (0);
 }
 
-int			valid(const char *str, int *i, int *val)
+int			is_valid(const char *str, int *i, int *valid)
 {
 	while (str[*i] && (valid_mod(str[*i]) || valid_precis(str[*i])\
 								|| valid_flags(str[*i])))
 	{
-		(*val)++;
+		(*valid)++;
 		(*i)++;
 	}
 	if (str[*i])
 	{
-		(*val)++;
+		(*valid)++;
 		(*i)++;
 	}
-	if (*val)
+	if (*valid)
 		return (0);
 	return (1);
 }

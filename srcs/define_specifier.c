@@ -38,13 +38,10 @@ void		define_type(const char *str, int *i, t_param *p)
 	char c;
 
 	c = str[*i];
+	c == 'i' ? c = 'd' : 0;
+	p->type = c;
 	if (!valid_type(c))
-	{
-		p->type = c;
 		return ;
-	}
-	if (c == 'i')
-		c = 'd';
 	if (c == 'o')
 	{
 		p->base = 8;
@@ -61,9 +58,7 @@ void		define_type(const char *str, int *i, t_param *p)
 		p->flags.space = 0;
 		p->flags.plus = 0;
 	}
-	p->type = c;
-	if (c == 'i' || c == 'd')
-		p->flags.sharp = 0;
+	c == 'i' || c == 'd' ? p->flags.sharp = 0 : 0;
 }
 
 void		define_precis(const char *str, int *i, t_param *p)

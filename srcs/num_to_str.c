@@ -12,7 +12,41 @@
 
 #include "ft_printf.h"
 
-char	*ftoa(long double num, int precision)
+static long double	ft_pow(long double x, int y)
+{
+	long double res;
+
+	res = x;
+	if (y == 0)
+		return (1);
+	while (--y > 0)
+		res *= x;
+	return (res);
+}
+
+static long double	roundd(long double num, int precision)
+{
+	long double tmp;
+	int			sign;
+
+	sign = 1;
+	if (num < 0)
+	{
+		sign = -1;
+		num = -num;
+	}
+	tmp = num - (long long)num;
+	tmp *= ft_pow(10, precision);
+	tmp -= (long long)tmp;
+	if (tmp >= 0.5)
+	{
+		tmp = 0.5;
+		num += tmp * ft_pow(0.1, precision);
+	}
+	return (num * sign);
+}
+
+char				*ftoa(long double num, int precision)
 {
 	char		*str;
 	char		*fraction;
@@ -20,25 +54,27 @@ char	*ftoa(long double num, int precision)
 	long double	tmp1;
 	int			digit;
 
+	num = roundd(num, precision);
 	str = ft_itoa((long long int)num);
 	i = ft_strlen(str);
 	fraction = ft_strnew(i + precision + 1);
 	fraction = ft_memcpy(fraction, str, i);
 	ft_strdel(&str);
-	fraction[i] = '.';
-	if (num < 0)
-		num *= -1;
+	if (precision)
+		fraction[i] = '.';
+	num < 0 ? num = -num : 0;
 	tmp1 = num - (long long int)num;
 	while (precision-- > 0)
 	{
-		digit = (int)(tmp1 * 10 + 1e-9);
+		digit = tmp1 * 10.0 + (precision < 10 ? 1e-9 : 0);
 		fraction[++i] = digit + 48;
 		tmp1 = tmp1 * 10 - digit;
 	}
 	return (fraction);
 }
 
-char	*itoa_base(unsigned long long num, int base, char sign, char *s)
+char				*itoa_base(unsigned long long num, int base, char sign,\
+														char *s)
 {
 	int		i;
 	int		j;

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_unsigned.c                                   :+:      :+:    :+:   */
+/*   parse_unsigned.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sperkhun <sperkhun@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,13 +12,13 @@
 
 #include "ft_printf.h"
 
-void		print_oux(va_list argptr, t_param *p)
+void		parse_oux(va_list argptr, t_param *p)
 {
 	p->var.u = va_arg(argptr, unsigned);
 	print_number(p, itoa_base(p->var.u, p->base, ' ', p->base_str));
 }
 
-void		print_ouxh(va_list argptr, t_param *p)
+void		parse_ouxh(va_list argptr, t_param *p)
 {
 	char	*nb;
 
@@ -27,7 +27,7 @@ void		print_ouxh(va_list argptr, t_param *p)
 	print_number(p, nb);
 }
 
-void		print_ouxhh(va_list argptr, t_param *p)
+void		parse_ouxhh(va_list argptr, t_param *p)
 {
 	char	*nb;
 
@@ -36,7 +36,7 @@ void		print_ouxhh(va_list argptr, t_param *p)
 	print_number(p, nb);
 }
 
-void		print_ouxl(va_list argptr, t_param *p)
+void		parse_ouxl(va_list argptr, t_param *p)
 {
 	char	*nb;
 
@@ -45,7 +45,7 @@ void		print_ouxl(va_list argptr, t_param *p)
 	print_number(p, nb);
 }
 
-void		print_ouxll(va_list argptr, t_param *p)
+void		parse_ouxll(va_list argptr, t_param *p)
 {
 	char	*nb;
 

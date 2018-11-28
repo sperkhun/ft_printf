@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_types.c                                      :+:      :+:    :+:   */
+/*   parse_cspf.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sperkhun <sperkhun@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void		print_inv(t_param *prm)
+void		parse_inv(t_param *prm)
 {
 	char *str;
 
@@ -22,7 +22,7 @@ void		print_inv(t_param *prm)
 	print_char(prm, str);
 }
 
-void		print_csp(va_list argptr, t_param *prm)
+void		parse_csp(va_list argptr, t_param *prm)
 {
 	char *str;
 
@@ -49,24 +49,35 @@ void		print_csp(va_list argptr, t_param *prm)
 	}
 }
 
-void		print_f(va_list argptr, t_param *p)
+static char	*check_special(long double num)
+{
+	if (num != num)
+		return (ft_strdup("nan"));
+	else if (num == 1.0 / 0.0)
+		return (ft_strdup("inf"));
+	else if (num == -1.0 / 0.0)
+		return (ft_strdup("-inf"));
+	else
+		return (NULL);
+}
+
+void		parse_f(va_list argptr, t_param *p)
 {
 	char	*str;
 	int		precision;
 
-	if (p->precision >= 0)
-		precision = p->precision;
-	else
-		precision = 6;
+	precision = p->precision >= 0 ? p->precision : 6;
 	if (p->modifire == L)
 	{
 		p->var.ld = va_arg(argptr, long double);
-		str = ftoa(p->var.ld, precision);
+		str = check_special(p->var.ld);
+		!str ? str = ftoa(p->var.ld, precision) : 0;
 	}
 	else
 	{
 		p->var.d = va_arg(argptr, double);
-		str = ftoa(p->var.d, precision);
+		str = check_special(p->var.d);
+		!str ? str = ftoa(p->var.d, precision) : 0;
 	}
 	print_float_nb(p, str);
 }
